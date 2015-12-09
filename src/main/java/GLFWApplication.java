@@ -2,6 +2,7 @@ import org.lwjgl.Version;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWKeyCallback;
 import org.lwjgl.opengl.GL;
+import org.lwjgl.opengl.GL11;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.system.MemoryUtil.*;
@@ -28,9 +29,12 @@ abstract public class GLFWApplication {
                 throw new IllegalStateException("Unable to initialize GLFW");
             }
 
-            printSystemInfo();
+            System.out.println("LWJGL version: " + Version.getVersion());
+            System.out.println("GLFW version: " + glfwGetVersionString());
 
             glfwSetErrorCallback(errorCallback = GLFWErrorCallback.createPrint());
+
+            setWindowHints();
 
             window = glfwCreateWindow(windowWidth, windowHeight, windowTitle, NULL, NULL);
             if (window == NULL) {
@@ -47,6 +51,8 @@ abstract public class GLFWApplication {
             GL.createCapabilities();
 
             beforeLoop();
+            System.out.println("OpenGL version: " + GL11.glGetString(GL11.GL_VERSION));
+            glfwShowWindow(window);
             loop();
 
             glfwDestroyWindow(window);
@@ -59,6 +65,18 @@ abstract public class GLFWApplication {
         }
     }
 
+    protected void setWindowHints() {
+        glfwDefaultWindowHints();
+
+        glfwWindowHint(GLFW_RESIZABLE,  GLFW_FALSE);
+        glfwWindowHint(GLFW_VISIBLE,    GLFW_FALSE);
+
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR,  3);
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR,  2);
+        glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT,  GLFW_TRUE);
+        glfwWindowHint(GLFW_OPENGL_PROFILE,         GLFW_OPENGL_CORE_PROFILE);
+    }
+
     public void setKeyCallback(GLFWKeyCallback callback) {
         keyCallback = callback;
     }
@@ -69,11 +87,6 @@ abstract public class GLFWApplication {
 
     public int getWindowHeight() {
         return windowHeight;
-    }
-
-    private void printSystemInfo() {
-        System.out.println("LWJGL version: " + Version.getVersion());
-        System.out.println("GLFW version: " + glfwGetVersionString());
     }
 
     private void loop() {
