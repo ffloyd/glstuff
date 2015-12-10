@@ -1,12 +1,11 @@
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
-import org.lwjgl.opengl.GL30;
 
 public class VoronoiDemo extends GLFWApplication {
     private SimpleVAO oneColorSquare;
 
     public VoronoiDemo() {
-        super("Voronoi Diagrams Demo", 1024, 768);
+        super("Voronoi Diagrams Demo", 768, 768);
         setKeyCallback(new BasicKeyCallback());
     }
 
@@ -14,13 +13,13 @@ public class VoronoiDemo extends GLFWApplication {
     protected void beforeLoop() {
         GL11.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
-        SimpleVBO square = new SimpleFloatVBO(new float[] {
-                -0.5f, -0.5f,
-                -0.5f,  0.5f,
-                0.5f, -0.5f,
-                0.5f,  0.5f,
-                -0.5f,  0.5f,
-                0.5f, -0.5f,
+        SimpleVBO square = new PointsVBO(new float[] {
+                -1f, -1f,
+                -1f,  1f,
+                1f, -1f,
+                1f,  1f,
+                -1,  1f,
+                1f, -1f,
         }, 2);
 
         ShaderProgram simpleProgram = new ShaderProgram(new Shader[] {

@@ -2,7 +2,6 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 
 import java.util.Arrays;
-import java.util.stream.Stream;
 
 public class ShaderProgram {
     private Shader[] shaders;

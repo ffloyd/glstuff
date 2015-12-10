@@ -5,13 +5,13 @@ import org.lwjgl.opengl.GL20;
 
 import java.nio.FloatBuffer;
 
-public class SimpleFloatVBO implements SimpleVBO {
+public class PointsVBO implements SimpleVBO {
     private FloatBuffer javaBuffer;
     private int buffer;
     private int dims;
     private int elementsCount;
 
-    public SimpleFloatVBO(float[] data, int dims) {
+    public PointsVBO(float[] data, int dims) {
         javaBuffer = BufferUtils.createFloatBuffer(data.length);
         javaBuffer.put(data);
         javaBuffer.flip();
@@ -21,7 +21,7 @@ public class SimpleFloatVBO implements SimpleVBO {
         this.elementsCount = data.length / dims;
     }
 
-    public SimpleFloatVBO(float[] data) {
+    public PointsVBO(float[] data) {
         this(data, 3);
     }
 
