@@ -5,15 +5,17 @@ public class VoronoiDemo extends GLFWApplication {
 
     private SimpleFloatVBO triangle;
 
-    private Shader flatVert;
-    private Shader simpleFrag;
+    private ShaderProgram shaderProgram;
+
 
     public VoronoiDemo() {
         super("Voronoi Diagrams Demo", 1024, 768);
         setKeyCallback(new BasicKeyCallback());
 
-        flatVert    = new Shader("flat.vert", GL20.GL_VERTEX_SHADER);
-        simpleFrag  = new Shader("simple.frag", GL20.GL_FRAGMENT_SHADER);
+        shaderProgram = new ShaderProgram(new Shader[] {
+                new Shader("flat.vert", GL20.GL_VERTEX_SHADER),
+                new Shader("simple.frag", GL20.GL_FRAGMENT_SHADER)
+        });
     }
 
     @Override
@@ -28,8 +30,7 @@ public class VoronoiDemo extends GLFWApplication {
         });
         triangle.uploadBuffer();
 
-        flatVert.compile();
-        simpleFrag.compile();
+        shaderProgram.link();
     }
 
     @Override
