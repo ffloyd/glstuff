@@ -23,9 +23,9 @@ public class Point {
     public Point(float x, float y) {
         this.x = x;
         this.y = y;
-        r = random.nextFloat();
-        g = random.nextFloat();
-        b = random.nextFloat();
+        r = 0.4f + random.nextFloat() * 0.6f;
+        g = 0.4f + random.nextFloat() * 0.6f;
+        b = 0.4f + random.nextFloat() * 0.6f;
     }
 
     public Float[] getCoords() {
