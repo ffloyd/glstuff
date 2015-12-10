@@ -1,17 +1,20 @@
 package io.github.ffloyd.glstuff.demos.voronoi_diagrams;
 
 import io.github.ffloyd.glstuff.Helpers;
+import io.github.ffloyd.glstuff.LambdaKeyCallback;
 import io.github.ffloyd.glstuff.SimpleGLFWApplication;
 import io.github.ffloyd.glstuff.VAO.SimpleVAO;
 import io.github.ffloyd.glstuff.VBO.PointsVBO;
 import io.github.ffloyd.glstuff.shaders.Shader;
 import io.github.ffloyd.glstuff.shaders.ShaderProgram;
 import org.lwjgl.BufferUtils;
+import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL20;
 
 import java.nio.FloatBuffer;
+import java.util.Vector;
 
 public class VoronoiDiagrams extends SimpleGLFWApplication {
     SimpleVAO       surface;
@@ -19,6 +22,13 @@ public class VoronoiDiagrams extends SimpleGLFWApplication {
 
     VoronoiDiagrams() {
         super("Voronoi Diagrams", 768, 768);
+        setKeyCallback(new LambdaKeyCallback(this::processKey));
+    }
+
+    private void processKey(int keyCode) {
+        if (keyCode == GLFW.GLFW_KEY_P) {
+            program.setUniformVariable("seeds_count", location -> GL20.glUniform1i(location, 1));
+        }
     }
 
     @Override
