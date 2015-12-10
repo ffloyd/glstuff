@@ -1,3 +1,5 @@
+package io.github.ffloyd.glstuff;
+
 import org.lwjgl.glfw.GLFWKeyCallback;
 
 import static org.lwjgl.glfw.GLFW.*;

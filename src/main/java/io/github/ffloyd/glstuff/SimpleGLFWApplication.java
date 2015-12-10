@@ -1,3 +1,5 @@
+package io.github.ffloyd.glstuff;
+
 import org.lwjgl.Version;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWKeyCallback;
@@ -7,7 +9,7 @@ import org.lwjgl.opengl.GL11;
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.system.MemoryUtil.*;
 
-abstract public class GLFWApplication {
+abstract public class SimpleGLFWApplication {
     private String  windowTitle;
     private int     windowWidth;
     private int     windowHeight;
@@ -17,7 +19,7 @@ abstract public class GLFWApplication {
     private GLFWErrorCallback   errorCallback;
     private GLFWKeyCallback     keyCallback;
 
-    public GLFWApplication(String windowTitle, int windowWidth, int windowHeight) {
+    public SimpleGLFWApplication(String windowTitle, int windowWidth, int windowHeight) {
         this.windowTitle    = windowTitle;
         this.windowHeight   = windowHeight;
         this.windowWidth    = windowWidth;
