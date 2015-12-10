@@ -5,9 +5,9 @@ import org.lwjgl.opengl.GL20;
 
 import java.nio.FloatBuffer;
 
-public class SimpleFloatVBO {
+public class SimpleFloatVBO implements SimpleVBO {
     private FloatBuffer javaBuffer;
-    private int bufferId;
+    private int buffer;
     private int dims;
 
     public SimpleFloatVBO(float[] data, int dims) {
@@ -22,19 +22,27 @@ public class SimpleFloatVBO {
         this(data, 3);
     }
 
-    public void uploadBuffer(int usage) {
-        bufferId = GL15.glGenBuffers();
-        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, bufferId);
+    public void upload(int usage) {
+        buffer = GL15.glGenBuffers();
+        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, buffer);
         GL15.glBufferData(GL15.GL_ARRAY_BUFFER, javaBuffer, usage);
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0); // unbind
     }
 
-    public void uploadBuffer() {
-        uploadBuffer(GL15.GL_STATIC_DRAW);
+    public void upload() {
+        upload(GL15.GL_STATIC_DRAW);
     }
 
-    public void enableBuffer() {
-        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, bufferId);
+    public void bind() {
+        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, buffer);
         GL20.glVertexAttribPointer(0, dims, GL11.GL_FLOAT, false, 0, 0);
+    }
+
+    public void unbind() {
+        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
+    }
+
+    public int get() {
+        return buffer;
     }
 }

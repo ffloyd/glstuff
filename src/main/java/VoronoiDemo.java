@@ -32,7 +32,7 @@ public class VoronoiDemo extends GLFWApplication {
                 -0.5f,  0.5f,
                 0.5f, -0.5f,
         }, 2);
-        triangle.uploadBuffer();
+        triangle.upload();
 
         shaderProgram.link();
     }
@@ -47,15 +47,17 @@ public class VoronoiDemo extends GLFWApplication {
         int vao = GL30.glGenVertexArrays();
         GL30.glBindVertexArray(vao);
 
-        triangle.enableBuffer();
+        triangle.bind();
 
         GL20.glBindAttribLocation(program, 0, "position");
         GL20.glEnableVertexAttribArray(0);
+        triangle.unbind();
 
         GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, 6);
 
         GL20.glDisableVertexAttribArray(0);
         GL20.glUseProgram(0);
+
     }
 
     public static void main(String[] args) {
