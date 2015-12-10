@@ -3,6 +3,7 @@ import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL31;
 
 import java.util.Arrays;
+import java.util.function.Consumer;
 
 public class ShaderProgram {
     private Shader[] shaders;
@@ -33,6 +34,17 @@ public class ShaderProgram {
             Arrays.stream(compiledShaders).forEach(shaderId -> GL20.glDetachShader(compiledProgram, shaderId));
         }
         return compiledProgram;
+    }
+
+    public int getUniformLocation(String name) {
+        return GL20.glGetUniformLocation(compiledProgram, name);
+    }
+
+    public void setUniformVariable(String name, Consumer<Integer> setter) {
+        GL20.glUseProgram(compiledProgram);
+        int location = getUniformLocation("color");
+        setter.accept(location);
+        GL20.glUseProgram(0);
     }
 
     public void bindUBO(SimpleUBO ubo, String parameter) {

@@ -14,28 +14,23 @@ public class VoronoiDemo extends GLFWApplication {
         GL11.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
         SimpleVBO square = new PointsVBO(new float[] {
-                -1f, -1f,
-                -1f,  1f,
-                1f, -1f,
-                1f,  1f,
-                -1,  1f,
-                1f, -1f,
+                -0.5f, -0.5f,
+                -0.5f,  0.5f,
+                0.5f, -0.5f,
+                0.5f,  0.5f,
+                -0.5f,  0.5f,
+                0.5f, -0.5f,
         }, 2);
 
-        ShaderProgram simpleProgram = new ShaderProgram(new Shader[] {
-                new Shader("flat.vert",     GL20.GL_VERTEX_SHADER),
-                new Shader("simple.frag",   GL20.GL_FRAGMENT_SHADER)
+        ShaderProgram program = new ShaderProgram(new Shader[] {
+                new Shader("flat.vert",         GL20.GL_VERTEX_SHADER),
+                new Shader("one_color.frag",    GL20.GL_FRAGMENT_SHADER)
         });
 
-        oneColorSquare = new SimpleVAO(square, simpleProgram);
+        oneColorSquare = new SimpleVAO(square, program);
         oneColorSquare.build();
 
-        FloatArrayUBO squareColor = new FloatArrayUBO(new float[] {
-                0.5f, 0.5f, 0.5f, 1.0f
-        });
-
-        squareColor.build(1);
-        simpleProgram.bindUBO(squareColor, "Data");
+        program.setUniformVariable("color", location -> GL20.glUniform4f(location, 0.0f, 0.5f, 0.0f, 1.0f));
     }
 
     @Override
