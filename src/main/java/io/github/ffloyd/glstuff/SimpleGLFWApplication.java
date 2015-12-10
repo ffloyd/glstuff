@@ -3,6 +3,7 @@ package io.github.ffloyd.glstuff;
 import org.lwjgl.Version;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWKeyCallback;
+import org.lwjgl.glfw.GLFWMouseButtonCallback;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
 
@@ -16,8 +17,9 @@ abstract public class SimpleGLFWApplication {
 
     private long window;
 
-    private GLFWErrorCallback   errorCallback;
-    private GLFWKeyCallback     keyCallback;
+    private GLFWErrorCallback       errorCallback;
+    private GLFWKeyCallback         keyCallback;
+    private GLFWMouseButtonCallback mouseButtonCallback;
 
     public SimpleGLFWApplication(String windowTitle, int windowWidth, int windowHeight) {
         this.windowTitle    = windowTitle;
@@ -49,6 +51,10 @@ abstract public class SimpleGLFWApplication {
                 glfwSetKeyCallback(window, keyCallback);
             }
 
+            if (mouseButtonCallback != null) {
+                glfwSetMouseButtonCallback(window, mouseButtonCallback);
+            }
+
             glfwSwapInterval(1); // enable vsync
             GL.createCapabilities();
             System.out.println("OpenGL version: " + GL11.glGetString(GL11.GL_VERSION));
@@ -70,6 +76,10 @@ abstract public class SimpleGLFWApplication {
 
     public void setKeyCallback(GLFWKeyCallback callback) {
         keyCallback = callback;
+    }
+
+    public void setMouseButtonCallback(GLFWMouseButtonCallback mouseButtonCallback) {
+        this.mouseButtonCallback = mouseButtonCallback;
     }
 
     public int getWindowWidth() {

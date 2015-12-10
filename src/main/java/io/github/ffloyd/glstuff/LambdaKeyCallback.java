@@ -13,7 +13,7 @@ public class LambdaKeyCallback extends BasicKeyCallback {
 
     @Override
     public void invoke(long window, int key, int scancode, int action, int mods) {
-        if (action == GLFW.GLFW_RELEASE) {
+        if (action == GLFW.GLFW_PRESS) {
             lambda.accept(key);
         }
         super.invoke(window, key, scancode, action, mods);

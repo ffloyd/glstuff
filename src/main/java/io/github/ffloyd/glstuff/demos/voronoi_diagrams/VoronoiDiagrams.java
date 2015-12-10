@@ -2,19 +2,17 @@ package io.github.ffloyd.glstuff.demos.voronoi_diagrams;
 
 import io.github.ffloyd.glstuff.Helpers;
 import io.github.ffloyd.glstuff.LambdaKeyCallback;
+import io.github.ffloyd.glstuff.LambdaMouseButtonCallback;
 import io.github.ffloyd.glstuff.SimpleGLFWApplication;
 import io.github.ffloyd.glstuff.VAO.SimpleVAO;
 import io.github.ffloyd.glstuff.VBO.PointsVBO;
 import io.github.ffloyd.glstuff.shaders.Shader;
 import io.github.ffloyd.glstuff.shaders.ShaderProgram;
-import org.lwjgl.BufferUtils;
+
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL20;
-
-import java.nio.FloatBuffer;
-import java.util.Vector;
 
 public class VoronoiDiagrams extends SimpleGLFWApplication {
     private SimpleVAO       surface;
@@ -27,6 +25,15 @@ public class VoronoiDiagrams extends SimpleGLFWApplication {
     VoronoiDiagrams() {
         super("Voronoi Diagrams", WINDOW_WIDTH, WINDOW_HEIGHT);
         setKeyCallback(new LambdaKeyCallback(this::processKey));
+        setMouseButtonCallback(new LambdaMouseButtonCallback(this::processLeftButton, this::processRightButton));
+    }
+
+    private void processLeftButton(Double x, Double y) {
+        pointManager.addPoint(x.floatValue(), (float)WINDOW_HEIGHT - y.floatValue());
+    }
+
+    private void processRightButton(Double x, Double y) {
+
     }
 
     private void processKey(int keyCode) {
