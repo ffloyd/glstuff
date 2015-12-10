@@ -68,18 +68,6 @@ abstract public class SimpleGLFWApplication {
         }
     }
 
-    protected void setWindowHints() {
-        glfwDefaultWindowHints();
-
-        glfwWindowHint(GLFW_RESIZABLE,  GLFW_FALSE);
-        glfwWindowHint(GLFW_VISIBLE,    GLFW_FALSE);
-
-        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR,  3);
-        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR,  3);
-        glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT,  GLFW_TRUE);
-        glfwWindowHint(GLFW_OPENGL_PROFILE,         GLFW_OPENGL_CORE_PROFILE);
-    }
-
     public void setKeyCallback(GLFWKeyCallback callback) {
         keyCallback = callback;
     }
@@ -90,6 +78,18 @@ abstract public class SimpleGLFWApplication {
 
     public int getWindowHeight() {
         return windowHeight;
+    }
+
+    protected void setWindowHints() {
+        glfwDefaultWindowHints();
+
+        glfwWindowHint(GLFW_RESIZABLE,  GLFW_FALSE);
+        glfwWindowHint(GLFW_VISIBLE,    GLFW_FALSE);
+
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR,  3);
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR,  3);
+        glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT,  GLFW_TRUE);
+        glfwWindowHint(GLFW_OPENGL_PROFILE,         GLFW_OPENGL_CORE_PROFILE);
     }
 
     private void loop() {

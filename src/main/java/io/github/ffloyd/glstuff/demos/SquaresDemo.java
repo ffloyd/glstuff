@@ -1,6 +1,7 @@
 package io.github.ffloyd.glstuff.demos;
 
 import io.github.ffloyd.glstuff.BasicKeyCallback;
+import io.github.ffloyd.glstuff.Helpers;
 import io.github.ffloyd.glstuff.SimpleGLFWApplication;
 import io.github.ffloyd.glstuff.VAO.SimpleVAO;
 import io.github.ffloyd.glstuff.VBO.PointsVBO;
@@ -22,18 +23,6 @@ public class SquaresDemo extends SimpleGLFWApplication {
         setKeyCallback(new BasicKeyCallback());
     }
 
-    private float[] generateQuad(float right, float top, float left, float bottom) {
-        return new float[] {
-                left, bottom,
-                left, top,
-                right, bottom,
-
-                right, top,
-                left, top,
-                right, bottom
-        };
-    }
-
     @Override
     protected void beforeLoop() {
         GL11.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
@@ -48,12 +37,12 @@ public class SquaresDemo extends SimpleGLFWApplication {
         });
         program.build();
 
-        PointsVBO firstQuad = new PointsVBO(generateQuad(
+        PointsVBO firstQuad = new PointsVBO(Helpers.generateQuad(
                 0.9f, 0.9f, 0.1f, 0.1f
         ), 2, GL15.GL_STATIC_DRAW);
         firstQuad.build();
 
-        PointsVBO secondQuad = new PointsVBO(generateQuad(
+        PointsVBO secondQuad = new PointsVBO(Helpers.generateQuad(
                 -0.1f, -0.1f, -0.9f, -0.9f
         ), 2, GL15.GL_STATIC_DRAW);
         secondQuad.build();
