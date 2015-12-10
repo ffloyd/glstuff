@@ -49,10 +49,11 @@ abstract public class GLFWApplication {
 
             glfwSwapInterval(1); // enable vsync
             GL.createCapabilities();
+            System.out.println("OpenGL version: " + GL11.glGetString(GL11.GL_VERSION));
+
+            glfwShowWindow(window);
 
             beforeLoop();
-            System.out.println("OpenGL version: " + GL11.glGetString(GL11.GL_VERSION));
-            glfwShowWindow(window);
             loop();
 
             glfwDestroyWindow(window);
