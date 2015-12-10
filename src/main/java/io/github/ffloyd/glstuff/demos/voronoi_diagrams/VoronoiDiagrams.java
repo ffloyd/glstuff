@@ -17,7 +17,7 @@ import org.lwjgl.opengl.GL20;
 public class VoronoiDiagrams extends SimpleGLFWApplication {
     private SimpleVAO       surface;
     private ShaderProgram   program;
-    private PointManager    pointManager;
+    private GeneratorManager generatorManager;
 
     public static final int WINDOW_WIDTH   = 768;
     public static final int WINDOW_HEIGHT  = 768;
@@ -29,7 +29,7 @@ public class VoronoiDiagrams extends SimpleGLFWApplication {
     }
 
     private void processLeftButton(Double x, Double y) {
-        pointManager.addPoint(x.floatValue(), (float)WINDOW_HEIGHT - y.floatValue());
+        generatorManager.addPoint(x.floatValue(), (float)WINDOW_HEIGHT - y.floatValue());
     }
 
     private void processRightButton(Double x, Double y) {
@@ -38,7 +38,7 @@ public class VoronoiDiagrams extends SimpleGLFWApplication {
 
     private void processKey(int keyCode) {
         if (keyCode == GLFW.GLFW_KEY_P) {
-            pointManager.addRandomPoint((float)WINDOW_WIDTH, (float)WINDOW_HEIGHT);
+            generatorManager.addRandomPoint((float)WINDOW_WIDTH, (float)WINDOW_HEIGHT);
         }
     }
 
@@ -65,8 +65,8 @@ public class VoronoiDiagrams extends SimpleGLFWApplication {
         surface = new SimpleVAO(quad, program);
         surface.build();
 
-        pointManager = new PointManager(program);
-        pointManager.addRandomPoint((float)WINDOW_WIDTH, (float)WINDOW_HEIGHT);
+        generatorManager = new GeneratorManager(program);
+        generatorManager.addRandomPoint((float)WINDOW_WIDTH, (float)WINDOW_HEIGHT);
     }
 
     @Override
