@@ -17,17 +17,21 @@ import java.nio.FloatBuffer;
 import java.util.Vector;
 
 public class VoronoiDiagrams extends SimpleGLFWApplication {
-    SimpleVAO       surface;
-    ShaderProgram   program;
+    private SimpleVAO       surface;
+    private ShaderProgram   program;
+    private PointManager    pointManager;
+
+    public static final int WINDOW_WIDTH   = 768;
+    public static final int WINDOW_HEIGHT  = 768;
 
     VoronoiDiagrams() {
-        super("Voronoi Diagrams", 768, 768);
+        super("Voronoi Diagrams", WINDOW_WIDTH, WINDOW_HEIGHT);
         setKeyCallback(new LambdaKeyCallback(this::processKey));
     }
 
     private void processKey(int keyCode) {
         if (keyCode == GLFW.GLFW_KEY_P) {
-            program.setUniformVariable("seeds_count", location -> GL20.glUniform1i(location, 1));
+            pointManager.addRandomPoint((float)WINDOW_WIDTH, (float)WINDOW_HEIGHT);
         }
     }
 
@@ -54,27 +58,8 @@ public class VoronoiDiagrams extends SimpleGLFWApplication {
         surface = new SimpleVAO(quad, program);
         surface.build();
 
-        program.setUniformVariable("seeds_count", location -> GL20.glUniform1i(location, 2));
-        program.setUniformVariable("seeds", location -> {
-            float[] seeds = new float[] {
-                    200f, 200f,
-                    100f, 100f
-            };
-            FloatBuffer floatBuffer = BufferUtils.createFloatBuffer(seeds.length);
-            floatBuffer.put(seeds);
-            floatBuffer.flip();
-            GL20.glUniform2fv(location, floatBuffer);
-        });
-        program.setUniformVariable("colors", location -> {
-            float[] seeds = new float[] {
-                    0.0f, 0.5f, 0.0f,
-                    0.5f, 0.0f, 0.0f,
-            };
-            FloatBuffer floatBuffer = BufferUtils.createFloatBuffer(seeds.length);
-            floatBuffer.put(seeds);
-            floatBuffer.flip();
-            GL20.glUniform3fv(location, floatBuffer);
-        });
+        pointManager = new PointManager(program);
+        pointManager.addRandomPoint((float)WINDOW_WIDTH, (float)WINDOW_HEIGHT);
     }
 
     @Override
