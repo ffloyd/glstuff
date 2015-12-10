@@ -19,7 +19,7 @@ public class SimpleVAO {
         vao = GL30.glGenVertexArrays();
         GL30.glBindVertexArray(vao);
 
-        vbo.bind();
+        vbo.bind(0);
         GL20.glBindAttribLocation(shaderProgram.get(), 0, "position");
         vbo.unbind();
 

@@ -39,9 +39,9 @@ public class PointsVBO implements SimpleVBO {
     }
 
     @Override
-    public void bind() {
+    public void bind(int attributeIndex) {
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, buffer);
-        GL20.glVertexAttribPointer(0, dims, GL11.GL_FLOAT, false, 0, 0);
+        GL20.glVertexAttribPointer(attributeIndex, dims, GL11.GL_FLOAT, false, 0, 0);
     }
 
     @Override
