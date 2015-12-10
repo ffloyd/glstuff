@@ -35,7 +35,7 @@ public class ShaderProgram {
         return compiledProgram;
     }
 
-    public int getCompiledProgram() {
+    public int get() {
         return compiledProgram;
     }
 }

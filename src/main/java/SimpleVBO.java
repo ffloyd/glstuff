@@ -4,5 +4,7 @@ public interface SimpleVBO {
 
     void bind();
     void unbind();
+
     int get(); // get buffer reference
+    int getElementsCount();
 }
