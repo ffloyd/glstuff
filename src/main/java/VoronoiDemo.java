@@ -29,6 +29,13 @@ public class VoronoiDemo extends GLFWApplication {
 
         oneColorSquare = new SimpleVAO(square, simpleProgram);
         oneColorSquare.build();
+
+        FloatArrayUBO squareColor = new FloatArrayUBO(new float[] {
+                0.5f, 0.5f, 0.5f, 1.0f
+        });
+
+        squareColor.build(1);
+        simpleProgram.bindUBO(squareColor, "Data");
     }
 
     @Override
