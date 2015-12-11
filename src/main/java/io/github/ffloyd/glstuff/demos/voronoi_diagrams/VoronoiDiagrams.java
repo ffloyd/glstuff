@@ -40,6 +40,10 @@ public class VoronoiDiagrams extends SimpleGLFWApplication {
         if (keyCode == GLFW.GLFW_KEY_P) {
             generatorManager.addRandomPointGenerator((float)WINDOW_WIDTH, (float)WINDOW_HEIGHT);
         }
+        if (keyCode == GLFW.GLFW_KEY_R) {
+            generatorManager.reset();
+            generatorManager.addRandomPointGenerator((float)WINDOW_WIDTH, (float)WINDOW_HEIGHT);
+        }
     }
 
     @Override

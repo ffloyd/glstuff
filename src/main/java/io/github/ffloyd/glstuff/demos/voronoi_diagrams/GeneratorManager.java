@@ -25,6 +25,13 @@ public class GeneratorManager {
         endpoints   = new Vector<>();
     }
 
+    public void reset() {
+        points      = new Vector<>();
+        current     = new Vector<>();
+        colors      = new Vector<>();
+        endpoints   = new Vector<>();
+    }
+
     public void addPoint(float x, float y) {
         current.add(new Point(x, y));
     }
