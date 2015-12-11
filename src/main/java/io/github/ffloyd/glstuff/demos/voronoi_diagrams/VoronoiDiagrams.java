@@ -29,16 +29,16 @@ public class VoronoiDiagrams extends SimpleGLFWApplication {
     }
 
     private void processLeftButton(Double x, Double y) {
-        generatorManager.addPoint(x.floatValue(), (float)WINDOW_HEIGHT - y.floatValue());
+        generatorManager.addFinalPoint(x.floatValue(), (float)WINDOW_HEIGHT - y.floatValue());
     }
 
     private void processRightButton(Double x, Double y) {
-
+        generatorManager.addPoint(x.floatValue(), (float)WINDOW_HEIGHT - y.floatValue());
     }
 
     private void processKey(int keyCode) {
         if (keyCode == GLFW.GLFW_KEY_P) {
-            generatorManager.addRandomPoint((float)WINDOW_WIDTH, (float)WINDOW_HEIGHT);
+            generatorManager.addRandomPointGenerator((float)WINDOW_WIDTH, (float)WINDOW_HEIGHT);
         }
     }
 
@@ -66,7 +66,7 @@ public class VoronoiDiagrams extends SimpleGLFWApplication {
         surface.build();
 
         generatorManager = new GeneratorManager(program);
-        generatorManager.addRandomPoint((float)WINDOW_WIDTH, (float)WINDOW_HEIGHT);
+        generatorManager.addRandomPointGenerator((float)WINDOW_WIDTH, (float)WINDOW_HEIGHT);
     }
 
     @Override

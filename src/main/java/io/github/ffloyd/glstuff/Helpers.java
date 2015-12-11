@@ -3,6 +3,7 @@ package io.github.ffloyd.glstuff;
 import org.lwjgl.BufferUtils;
 
 import java.nio.FloatBuffer;
+import java.nio.IntBuffer;
 
 public class Helpers {
     public static float[] generateQuad(float right, float top, float left, float bottom) {
@@ -22,6 +23,13 @@ public class Helpers {
         floatBuffer.put(data);
         floatBuffer.flip();
         return floatBuffer;
+    }
+
+    public static IntBuffer generateIntBuffer(int[] data) {
+        IntBuffer intBuffer = BufferUtils.createIntBuffer(data.length);
+        intBuffer.put(data);
+        intBuffer.flip();
+        return intBuffer;
     }
 
     public static float[] convert(double[] data) {

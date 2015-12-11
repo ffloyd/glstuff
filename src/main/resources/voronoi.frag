@@ -1,27 +1,82 @@
-#version 330
-out vec4 fragColor;
+#version 330 core
+out vec4 result;
 
-uniform vec2 seeds[32];
+uniform int points_count;
+uniform vec2 points[32];
+
+uniform int generators_count;
 uniform vec3 colors[32];
-uniform int seeds_count;
+uniform int endpoints[32];
+
+float eps = 0.000001;
+
+struct IndexRange {
+    int left;
+    int right;
+};
 
 float dist(vec2 a, vec2 b) {
     return distance(a, b);
 }
 
-int getNearestPoint() {
-    int nearestIndex = 0;
-    float nearestDist = dist(seeds[nearestIndex], gl_FragCoord.xy);
+IndexRange getGeneratorPointsRange(int generatorIndex) { // [0] - first element, [1] - last + 1
+    if (generatorIndex == 0) {
+        return IndexRange(0, endpoints[0]);
+    } else {
+        return IndexRange(endpoints[generatorIndex - 1], endpoints[generatorIndex]);
+    }
+}
 
-    for (int i = 1; i < seeds_count; ++i) {
-        float current = distance(seeds[i], gl_FragCoord.xy);
-        if (current < nearestDist) {
-            nearestDist = current;
-            nearestIndex = i;
+vec2 getClosestSegmentPoint(vec2 segment_start, vec2 segment_end, vec2 point) {
+    vec2 segment_vec    = segment_end - segment_start;
+    vec2 point_vec      = point - segment_start;
+
+    float projection_shift = dot(point_vec, segment_vec) / dot(segment_vec, segment_vec);
+    if (projection_shift < -eps) {
+        return segment_start;
+    } else if (projection_shift > (1.0 + eps)) {
+        return segment_end;
+    } else {
+        return segment_vec * projection_shift + segment_start;
+    }
+}
+
+vec2 getClosestGeneratorPoint(int generatorIndex) {
+    IndexRange range = getGeneratorPointsRange(generatorIndex);
+
+    vec2 bestPoint = points[range.left];
+    float bestDist = dist(gl_FragCoord.xy, bestPoint);
+
+    for (int i = range.left + 1; i < range.right; ++i) {
+        vec2 currentPoint = getClosestSegmentPoint(points[i-1], points[i], gl_FragCoord.xy);
+        float currentDist = dist(gl_FragCoord.xy, currentPoint);
+
+        if (currentDist < bestDist) {
+            bestPoint = currentPoint;
+            bestDist = currentDist;
         }
     }
 
-    return nearestIndex;
+    return bestPoint;
+}
+
+float distToGenerator(int generatorIndex) {
+    return dist(getClosestGeneratorPoint(generatorIndex), gl_FragCoord.xy);
+}
+
+int getClosestGeneratorIndex() {
+    int bestIndex = 0;
+    float best = distToGenerator(bestIndex);
+
+    for (int i = 1; i < generators_count; ++i) {
+        float current = distToGenerator(i);
+        if (current < best) {
+            best = current;
+            bestIndex = i;
+        }
+    }
+
+    return bestIndex;
 }
 
 vec3 shadeColor(vec2 center, vec3 base_color) {
@@ -41,20 +96,20 @@ vec3 shadeColor(vec2 center, vec3 base_color) {
 }
 
 vec3 getColor() {
-    int nearestIndex = getNearestPoint();
-    vec2 nearest = seeds[nearestIndex];
+    int generatorIndex = getClosestGeneratorIndex();
+    vec2 closestPoint = getClosestGeneratorPoint(generatorIndex);
 
-    float nearestDist = dist(nearest, gl_FragCoord.xy);
+    float distToGenerator = dist(closestPoint, gl_FragCoord.xy);
 
-    if (nearestDist < 2.0) {
+    if (distToGenerator < 1.0) {
         return vec3(0.0, 0.0, 0.0); // draw points
     } else {
-        return shadeColor(nearest, colors[nearestIndex]);
+        return shadeColor(closestPoint, colors[generatorIndex]);
     }
 }
 
 void main() {
     vec3 color = getColor();
 
-    fragColor = vec4(color, 1.0);
+    result = vec4(color, 1.0);
 }
