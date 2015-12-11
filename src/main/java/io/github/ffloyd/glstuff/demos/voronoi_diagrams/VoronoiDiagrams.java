@@ -44,6 +44,9 @@ public class VoronoiDiagrams extends SimpleGLFWApplication {
             case GLFW.GLFW_KEY_R:
                 generatorManager.reset();
                 break;
+            case GLFW.GLFW_KEY_M:
+                generatorManager.changeMetric();
+                break;
             case GLFW.GLFW_KEY_UP:
                 generatorManager.increaseMultWeight();
                 break;

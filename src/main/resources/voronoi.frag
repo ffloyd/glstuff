@@ -1,6 +1,8 @@
 #version 330 core
 out vec4 result;
 
+uniform int metric;
+
 uniform int points_count;
 uniform vec2 points[64];
 
@@ -17,8 +19,29 @@ struct IndexRange {
     int right;
 };
 
+float distanceL1(vec2 a, vec2 b) {
+    return abs(a.x - b.x) + abs(a.y - b.y);
+}
+
+float distanceLInf(vec2 a, vec2 b) {
+    return max(abs(a.x - b.x), abs(a.y - b.y));
+}
+
 float vDist(vec2 a, vec2 b, int generatorIndex) {
-    return distance(a, b) * mult_weights[generatorIndex] + add_weights[generatorIndex];
+    float base;
+    switch(metric)
+    {
+        case 1: // L_1 metric
+            base = distanceL1(a, b);
+            break;
+        case 2: // L_inf metric
+            base = distanceLInf(a, b);
+            break;
+        case 0: // euclid metric
+        default:
+            base = distance(a, b);
+    }
+    return base * mult_weights[generatorIndex] + add_weights[generatorIndex];
 }
 
 IndexRange getGeneratorPointsRange(int generatorIndex) { // [0] - first element, [1] - last + 1

@@ -11,12 +11,17 @@ import java.util.Vector;
 import java.util.function.Function;
 
 public class GeneratorManager {
+    static final int EUCLID_METRIC  = 0;
+    static final int L_1_METRIC     = 1;
+    static final int L_INF_METRIC   = 2;
+
     private Vector<Point>   points;
     private Vector<Color>   colors;
     private Vector<Integer> endpoints;
     private Vector<Float>   multWeights;
     private Vector<Float>   addWeights;
     private boolean         beginNewGenerator;
+    private int             metric;
     private ShaderProgram   program;
 
     private float windowWidth;
@@ -37,6 +42,7 @@ public class GeneratorManager {
         multWeights         = new Vector<>();
         addWeights          = new Vector<>();
         beginNewGenerator   = true;
+        metric              = EUCLID_METRIC;
 
         addRandomPointGenerator();
     }
@@ -86,12 +92,19 @@ public class GeneratorManager {
         upload();
     }
 
+    public void changeMetric() {
+        metric = (metric + 1) % 3;
+        upload();
+    }
+
     private void upload() {
         float[] pointsData      = extractFloats(points);
         float[] colorsData      = extractFloats(colors);
         float[] multWeightsData = Helpers.convert(multWeights.stream().mapToDouble(Float::doubleValue).toArray());
         float[] addWeightsData  = Helpers.convert(addWeights.stream().mapToDouble(Float::doubleValue).toArray());
         int[] endpointsData     = endpoints.stream().mapToInt(Integer::intValue).toArray();
+
+        program.setUniformVariable("metric", location -> GL20.glUniform1i(location, metric));
 
         program.setUniformVariable("points_count", location -> GL20.glUniform1i(location, points.size()));
         program.setUniformVariable("points", location -> {
