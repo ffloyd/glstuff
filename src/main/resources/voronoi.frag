@@ -2,11 +2,11 @@
 out vec4 result;
 
 uniform int points_count;
-uniform vec2 points[32];
+uniform vec2 points[64];
 
 uniform int generators_count;
-uniform vec3 colors[32];
-uniform int endpoints[32];
+uniform vec3 colors[64];
+uniform int endpoints[64];
 
 float eps = 0.000001;
 

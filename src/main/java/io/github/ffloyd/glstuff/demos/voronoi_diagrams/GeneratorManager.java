@@ -11,40 +11,41 @@ import java.util.Vector;
 
 public class GeneratorManager {
     private Vector<Point>   points;
-    private Vector<Point>   current;
     private Vector<Color>   colors;
     private Vector<Integer> endpoints;
+    private boolean         beginNewGenerator;
     private ShaderProgram   program;
 
     public GeneratorManager(ShaderProgram program) {
         this.program = program;
 
-        points      = new Vector<>();
-        current     = new Vector<>();
-        colors      = new Vector<>();
-        endpoints   = new Vector<>();
+        reset();
     }
 
     public void reset() {
-        points      = new Vector<>();
-        current     = new Vector<>();
-        colors      = new Vector<>();
-        endpoints   = new Vector<>();
+        points              = new Vector<>();
+        colors              = new Vector<>();
+        endpoints           = new Vector<>();
+        beginNewGenerator   = true;
     }
 
     public void addPoint(float x, float y) {
-        current.add(new Point(x, y));
+        if (beginNewGenerator) {
+            colors.add(new Color());
+            endpoints.add(0);
+            beginNewGenerator = false;
+        }
+
+        points.add(new Point(x, y));
+        endpoints.set(endpoints.size() - 1, points.size());
+
+        upload();
     }
 
     public void addFinalPoint(float x, float y) {
         addPoint(x, y);
-        points.addAll(current);
-        current.clear();
 
-        colors.add(new Color());
-        endpoints.add(points.size());
-
-        upload();
+        beginNewGenerator = true;
     }
 
     private void upload() {
