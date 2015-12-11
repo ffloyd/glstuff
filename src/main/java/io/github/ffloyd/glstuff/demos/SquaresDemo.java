@@ -19,7 +19,7 @@ public class SquaresDemo extends SimpleGLFWApplication {
     private SimpleVAO secondSquare;
 
     public SquaresDemo() {
-        super("The Green Square", 768, 768);
+        super("The Two Squares", 768, 768);
         setKeyCallback(new BasicKeyCallback());
     }
 
