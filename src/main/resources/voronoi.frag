@@ -6,6 +6,8 @@ uniform vec2 points[64];
 
 uniform int generators_count;
 uniform vec3 colors[64];
+uniform float mult_weights[64];
+uniform float add_weights[64];
 uniform int endpoints[64];
 
 float eps = 0.000001;
@@ -15,8 +17,8 @@ struct IndexRange {
     int right;
 };
 
-float dist(vec2 a, vec2 b) {
-    return distance(a, b);
+float vDist(vec2 a, vec2 b, int generatorIndex) {
+    return distance(a, b) * mult_weights[generatorIndex] + add_weights[generatorIndex];
 }
 
 IndexRange getGeneratorPointsRange(int generatorIndex) { // [0] - first element, [1] - last + 1
@@ -45,11 +47,11 @@ vec2 getClosestGeneratorPoint(int generatorIndex) {
     IndexRange range = getGeneratorPointsRange(generatorIndex);
 
     vec2 bestPoint = points[range.left];
-    float bestDist = dist(gl_FragCoord.xy, bestPoint);
+    float bestDist = vDist(gl_FragCoord.xy, bestPoint, generatorIndex);
 
     for (int i = range.left + 1; i < range.right; ++i) {
         vec2 currentPoint = getClosestSegmentPoint(points[i-1], points[i], gl_FragCoord.xy);
-        float currentDist = dist(gl_FragCoord.xy, currentPoint);
+        float currentDist = vDist(gl_FragCoord.xy, currentPoint, generatorIndex);
 
         if (currentDist < bestDist) {
             bestPoint = currentPoint;
@@ -61,7 +63,7 @@ vec2 getClosestGeneratorPoint(int generatorIndex) {
 }
 
 float distToGenerator(int generatorIndex) {
-    return dist(getClosestGeneratorPoint(generatorIndex), gl_FragCoord.xy);
+    return vDist(getClosestGeneratorPoint(generatorIndex), gl_FragCoord.xy, generatorIndex);
 }
 
 int getClosestGeneratorIndex() {
@@ -99,9 +101,9 @@ vec3 getColor() {
     int generatorIndex = getClosestGeneratorIndex();
     vec2 closestPoint = getClosestGeneratorPoint(generatorIndex);
 
-    float distToGenerator = dist(closestPoint, gl_FragCoord.xy);
+    float realDistToGenerator = distance(closestPoint, gl_FragCoord.xy);
 
-    if (distToGenerator < 1.0) {
+    if (realDistToGenerator < 1.0) {
         return vec3(0.0, 0.0, 0.0); // draw points
     } else {
         return shadeColor(closestPoint, colors[generatorIndex]);

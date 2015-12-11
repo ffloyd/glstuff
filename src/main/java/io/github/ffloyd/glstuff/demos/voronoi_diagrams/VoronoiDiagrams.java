@@ -37,12 +37,25 @@ public class VoronoiDiagrams extends SimpleGLFWApplication {
     }
 
     private void processKey(int keyCode) {
-        if (keyCode == GLFW.GLFW_KEY_P) {
-            generatorManager.addRandomPointGenerator((float)WINDOW_WIDTH, (float)WINDOW_HEIGHT);
-        }
-        if (keyCode == GLFW.GLFW_KEY_R) {
-            generatorManager.reset();
-            generatorManager.addRandomPointGenerator((float)WINDOW_WIDTH, (float)WINDOW_HEIGHT);
+        switch (keyCode) {
+            case GLFW.GLFW_KEY_P:
+                generatorManager.addRandomPointGenerator();
+                break;
+            case GLFW.GLFW_KEY_R:
+                generatorManager.reset();
+                break;
+            case GLFW.GLFW_KEY_UP:
+                generatorManager.increaseMultWeight();
+                break;
+            case GLFW.GLFW_KEY_DOWN:
+                generatorManager.decreaseMultWeight();
+                break;
+            case GLFW.GLFW_KEY_RIGHT:
+                generatorManager.increaseAddWeight();
+                break;
+            case GLFW.GLFW_KEY_LEFT:
+                generatorManager.decreaseAddWeight();
+                break;
         }
     }
 
@@ -69,8 +82,7 @@ public class VoronoiDiagrams extends SimpleGLFWApplication {
         surface = new SimpleVAO(quad, program);
         surface.build();
 
-        generatorManager = new GeneratorManager(program);
-        generatorManager.addRandomPointGenerator((float)WINDOW_WIDTH, (float)WINDOW_HEIGHT);
+        generatorManager = new GeneratorManager(program, (float)WINDOW_WIDTH, (float)WINDOW_HEIGHT);
     }
 
     @Override
